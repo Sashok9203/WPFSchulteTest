@@ -1,0 +1,101 @@
+﻿<Window x:Class="WpfApp2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
+        xmlns:local="clr-namespace:WpfApp2"
+        xmlns:system="clr-namespace:System;assembly=System"
+        mc:Ignorable="d"
+        ResizeMode="CanResizeWithGrip"  AllowsTransparency="True" Height="400" Width="400" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent"  >
+    <Window.Resources>
+        <ImageBrush x:Key="eye" ImageSource="/Image/center.png" Stretch="Uniform" />
+     
+        <Style x:Key ="textStyle" TargetType="TextBlock" >
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style x:Key ="elementStyle" TargetType="Border">
+            <Setter  Property="CornerRadius" Value="3"/>
+            <Setter  Property="BorderThickness" Value="0,0,5,5"/>
+            <Setter Property="Margin" Value="1" />
+            <Style.Triggers>
+            <DataTrigger Binding="{Binding CanPress}" Value="true">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Duration="00:00:0.1"  To="4,4,2,2"  Storyboard.TargetProperty="BorderThickness"/>
+                            <ColorAnimation Duration="00:00:0.1" To="DarkMagenta"  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
+                                <ColorAnimation Duration="00:00:0.1" To="Magenta"  Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+            </Style.Triggers>
+        </Style>
+      
+      
+    </Window.Resources>
+    <Window.InputBindings>
+            <KeyBinding Key="Esc" Command="{Binding Exit}"/>
+    </Window.InputBindings>
+
+    <Border  BorderThickness="12" BorderBrush="DarkSeaGreen" CornerRadius="14" Background="DarkGray">
+        
+        <Border BorderThickness="4" BorderBrush="Chocolate" CornerRadius="8" Padding="3" >
+            <ItemsControl ItemsSource="{Binding Cells}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType ="local:Cell">
+                        <Border  Name ="border" Style="{StaticResource elementStyle}" 
+                                 Background="{Binding  BackColor ,Mode=OneTime}" 
+                                 BorderBrush="{Binding BorderColor ,Mode=OneTime}"
+                                 MouseDown="Border_MouseDown">
+                            <TextBlock Name="numText" Style  ="{StaticResource textStyle}" Text="{ Binding Number , Mode=OneTime}"/>
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="borderTransform" X="0" Y="0"/>
+                            </Border.RenderTransform>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CanPress}" Value="false"/>
+                                    <Condition Binding="{Binding Pressed}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames
+                                                Storyboard.TargetName ="borderTransform"
+                                                Storyboard.TargetProperty="X"
+                                                Duration="0:0:0:0.12"
+                                                RepeatBehavior="2x">
+                                                <LinearDoubleKeyFrame Value="3" KeyTime="0:0:0:0.03"/>
+                                                <LinearDoubleKeyFrame Value="-3" KeyTime="0:0:0:0.09"/>
+                                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0:0.12"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.EnterActions>
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding Eye ,Mode = OneTime}" Value="true">
+                                <Setter TargetName="border" Property ="Background" Value="{StaticResource  eye}"/>
+                                <Setter TargetName="border" Property="CornerRadius" Value="3"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="DarkGreen" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+         </Border>
+    </Border>
+ 
+</Window>
