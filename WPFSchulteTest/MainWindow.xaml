@@ -11,7 +11,9 @@
         Height="600" Width="600" WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         Background="Transparent" 
-        AllowsTransparency="True" >
+        AllowsTransparency="True" 
+        MinHeight="300"
+        MinWidth="300">
     <Window.Resources>
         <ImageBrush x:Key="eye" ImageSource="/Image/center.png" Stretch="Uniform" />
      

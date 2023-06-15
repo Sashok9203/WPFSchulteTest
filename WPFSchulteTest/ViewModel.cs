@@ -55,8 +55,6 @@ namespace WpfApp2
         }
 
 
-
-
         public ViewModel(int rows)
         {
             numbers = new List<int>();
