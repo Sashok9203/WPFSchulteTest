@@ -10,16 +10,17 @@ using PropertyChanged;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Input;
+using WpfApp2;
 
 namespace WpfApp2
 {
     public partial class MainWindow : Window
     {
-        readonly ViewModel VM;
+        readonly TestViewModel VM;
         public MainWindow()
         {
             InitializeComponent();
-            VM = new ViewModel(5);
+            VM = new TestViewModel(5);
              DataContext = VM;
         }
 

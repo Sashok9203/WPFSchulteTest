@@ -13,9 +13,9 @@ namespace WpfApp2
     {
         public SolidColorBrush BorderColor { get; set; }
         public Brush BackColor { get; set; }
-        public int?   Number { get; set; }
-        public bool  CanPress { get; set; }
-        public bool  Pressed { get; set; }
-        public bool  Eye{ get; set; }
+        public int? Number { get; set; }
+        public bool CanPress { get; set; }
+        public bool Pressed { get; set; }
+        public bool Eye { get; set; }
     }
 }

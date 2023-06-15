@@ -16,7 +16,7 @@ using System.Windows.Media;
 namespace WpfApp2
 {
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    internal class ViewModel
+    internal class TestViewModel
     {
         private ObservableCollection<Cell> cells;
         private readonly RelayCommand exit;
@@ -34,7 +34,7 @@ namespace WpfApp2
             set
             {
                 currentNumber = value;
-                if (!int.TryParse(currentNumber,out int number)) number = 0;
+                if (!int.TryParse(currentNumber, out int number)) number = 0;
                 int index = numbers.IndexOf(number);
 
                 if (currentNumber == nextNumber)
@@ -42,9 +42,9 @@ namespace WpfApp2
                     cells[index].CanPress = true;
                     if (nextNumber == (elementCount - 1).ToString())
                     {
-                       Quit();
-                       cellsInit();
-                       return;
+                        Quit();
+                        cellsInit();
+                        return;
                     }
                     nextNumber = (++number).ToString();
                 }
@@ -55,7 +55,7 @@ namespace WpfApp2
         }
 
 
-        public ViewModel(int rows)
+        public TestViewModel(int rows)
         {
             numbers = new List<int>();
             currentNumber = nextNumber = string.Empty;

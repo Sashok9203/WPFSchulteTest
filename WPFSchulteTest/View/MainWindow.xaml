@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
+        d:DataContext="{d:DesignInstance Type=local:TestViewModel}"
         xmlns:local="clr-namespace:WpfApp2"
         xmlns:system="clr-namespace:System;assembly=System"
         mc:Ignorable="d"
