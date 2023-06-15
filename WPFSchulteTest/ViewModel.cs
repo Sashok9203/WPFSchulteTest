@@ -18,13 +18,15 @@ namespace WpfApp2
     [PropertyChanged.AddINotifyPropertyChangedInterface]
     internal class ViewModel
     {
-        ObservableCollection<Cell> cells;
-        private readonly int  elementCount;
+        private ObservableCollection<Cell> cells;
+        private readonly RelayCommand exit;
+        private readonly int elementCount;
         private List<int> numbers;
         private string nextNumber;
         public string currentNumber;
 
         public IEnumerable<Cell> Cells => cells;
+        public ICommand Exit => exit;
 
         public string CurrentNumber
         {
@@ -32,22 +34,18 @@ namespace WpfApp2
             set
             {
                 currentNumber = value;
-                int number = int.Parse(currentNumber);
+                if (!int.TryParse(currentNumber,out int number)) number = 0;
                 int index = numbers.IndexOf(number);
-                
+
                 if (currentNumber == nextNumber)
                 {
                     cells[index].CanPress = true;
-                    if (nextNumber == (elementCount-1).ToString())
+                    if (nextNumber == (elementCount - 1).ToString())
                     {
-                        if (MessageBox.Show("Do you want to continue ? ", "Exit", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                        {
-                            cellsInit();
-                            return;
-                        }
-                        else Application.Current.Shutdown();
+                       Quit();
+                       cellsInit();
+                       return;
                     }
-                  
                     nextNumber = (++number).ToString();
                 }
                 cells[index].Pressed = true;
@@ -56,14 +54,15 @@ namespace WpfApp2
             }
         }
 
-      
-        
+
+
 
         public ViewModel(int rows)
         {
             numbers = new List<int>();
             currentNumber = nextNumber = string.Empty;
             cells = new();
+            exit = new((o) => Quit());
             if (rows % 2 == 0) rows++;
             elementCount = rows * rows;
             cellsInit();
@@ -83,9 +82,9 @@ namespace WpfApp2
             {
                 Cell cell = new();
                 Color tmp = Color.FromArgb(255, (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-                cell.Number = item;
-                if (cell.Number != 0)
+                if (item != 0)
                 {
+                    cell.Number = item;
                     cell.BorderColor = new SolidColorBrush(tmp);
                     cell.BackColor = new SolidColorBrush(tmp + Color.FromArgb(255, 60, 60, 60));
                 }
@@ -93,5 +92,11 @@ namespace WpfApp2
             }
             cells[elementCount / 2].Eye = true;
         }
+        private void Quit()
+        {
+            if (MessageBox.Show("Do you want to continue ? ", "Exit", MessageBoxButton.YesNo) == MessageBoxResult.Yes) return;
+            Application.Current.Shutdown();
+        }
     }
+
 }
